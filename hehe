@@ -1,0 +1,200 @@
+{
+  "metadata": {
+    "total_processed": 9,
+    "successful": 8,
+    "failed": 1,
+    "processing_time": 713.068977355957,
+    "timestamp": "2025-08-08T14:59:39.879455"
+  },
+  "profiles": [
+    {
+      "Name": "Barton Townley",
+      "Company": "Explore Group",
+      "Designation": "Senior Recruiter",
+      "Linkedin_URL": null,
+      "Email": "barton@osmii.com",
+      "Phone_Number": "+44 (0) 747 5900 983",
+      "Citations": [
+        "https://www.xing.com/profile/Barton_Townley",
+        "https://contactout.com/Barton-Townley-293988289",
+        "https://theorg.com/org/explore-group/org-chart/barton-townley",
+        "https://osmii.com/what-we-do",
+        "https://www.zoominfo.com/c/osmii/347766634",
+        "https://theorg.com/org/explore-group",
+        "https://osmii.com",
+        "https://www.explore-group.com/about/01/",
+        "https://find-and-update.company-information.service.gov.uk/company/07613949",
+        "https://prezi.com/p/7cwujyovmwa7/ai-headhunting-innovations/"
+      ],
+      "About": "Technology recruitment specialist with extensive experience in software development and Python recruitment since 2016. Currently Senior Recruiter at Explore Group, previously held leadership roles at Osmii including Head of Software Recruitment. Expertise spans Open Source, Cloud, and DevOps recruitment across diverse client portfolio from startups to Fortune 500 companies."
+    },
+    {
+      "Name": "Massimo Esposito",
+      "Company": "Sterz",
+      "Designation": "General Manager",
+      "Linkedin_URL": null,
+      "Email": null,
+      "Phone_Number": null,
+      "Citations": [
+        "https://www.globenewswire.com/news-release/2024/09/09/2943108/0/en/AFCEA-International-Welcomes-New-Europe-Based-General-Manager.html",
+        "https://norinvest.ch/en/board-of-directors/",
+        "https://departer.com/we-are-officially-named-bvmws-foreign-representatives-for-australia/",
+        "https://www.icar.cnr.it/en/persone/esposito/",
+        "https://clay.earth/profile/david-sterz",
+        "https://www.citybiz.co/article/598083/afcea-international-appoints-massimo-esposito-as-general-manager-afcea-europe/",
+        "https://www.zoominfo.com/c/afcea-international/536610404",
+        "https://afcea.cgideu.com/Common/Ausstellerdetails/1016",
+        "https://europe.afcea.org/website/15678/info/",
+        "https://tricycis.co.uk/wp-content/uploads/2025/06/Massimo-Esposito.pdf"
+      ],
+      "About": "Massimo Esposito works as General Manager at Sterz."
+    },
+    {
+      "Name": "Shobhit Tiwari (Sho)",
+      "Company": "Publicis Sapient",
+      "Designation": "Sr. Associate L1 | Cloud & DevOps",
+      "Linkedin_URL": null,
+      "Email": null,
+      "Phone_Number": null,
+      "Citations": [
+        "https://contactout.com/Shobhit-Tiwari-8900923",
+        "https://www.publicissapient.com/services/technology-engineering/engineering-and-cloud-transformation",
+        "https://www.publicissapient.com/partnerships/aws/devops",
+        "https://jobs.masscybercenter.org/companies/publicis-sapient/jobs/55333978-associate-l2-devops-engineer-azure",
+        "https://www.hirist.tech/j/publicis-sapient-cloud-devops-engineer-monitoring-tools-4-7-yrs-1474832",
+        "https://github.com/pranavg000/placement_portal/blob/master/pd.csv",
+        "https://groups.google.com/g/testing-experienced-openings/c/AcESy1tbz3M",
+        "https://www.datanyze.com/people/Shobhit-Tiwari/6759102830",
+        "https://contactout.com/bindu-sudhan-12776",
+        "https://himalayas.app/@romutiwari"
+      ],
+      "About": "Cloud and DevOps professional with 6+ years experience at Publicis Sapient, progressing from Associate L1 to Sr. Associate L1. Expertise in AWS, Kubernetes, Terraform, Docker, and CI/CD pipelines. Currently also serves as Cloud Engineer at Lloyds Banking Group. Bachelor's in Technology from Chandigarh Group of Colleges."
+    },
+    {
+      "Name": "Petah Green",
+      "Company": "VOIS",
+      "Designation": "Senior Managing Director",
+      "Linkedin_URL": null,
+      "Email": "petah.green@oracle.com",
+      "Phone_Number": "+44 ** **** *299",
+      "Citations": [
+        "https://milachiagroup.com/speakers/petah-green/",
+        "https://www.voiscentre.com/about/who-we-are/petah-green",
+        "https://www.idc-accelerate.com/eng/on-demand?id=5b0b1e129449df9c99d3",
+        "https://channellife.com.au/story/purple-signs-microsoft-exec-head-asia-pacific",
+        "https://www.clateway.com/author/pgreenclateway-com/",
+        "https://bdaily.co.uk/articles/2016/03/07/purple-appoint-petah-green-as-vp-asia-pacific",
+        "https://contactout.com/petah-green-58012",
+        "https://reachinbox.ai/people/Petah/Green/5a2120404a381d19cbe3a9b3",
+        "https://purple.ai/purple-appoint-petah-green-vp-asia-pacific/",
+        "https://dgtlinfra.com/google-cloud-chile-israel-germany-saudi-arabia-us/"
+      ],
+      "About": "Senior technology executive with extensive experience in digital transformation and cloud solutions across EMEA and Asia Pacific. Previously Infrastructure & Industry Practice Leader at Google Cloud (2021-2023) and Oracle Digital specialist. Expert in building high-performance teams and strategic partnerships in enterprise technology markets."
+    },
+    {
+      "Name": "Sneha Mishra",
+      "Company": "Optimist Brand Design LLP",
+      "Designation": "Content and Copy Writer",
+      "Linkedin_URL": null,
+      "Email": "snehamishracollabs@gmail.com",
+      "Phone_Number": null,
+      "Citations": [
+        "https://www.instagram.com/snehacamroll/",
+        "https://www.instagram.com/reel/DLCGwKgyk3n/",
+        "https://www.instagram.com/reel/DLPE8CSJpd1/",
+        "https://www.signalhire.com/profiles/sneha-mishra/225723794",
+        "https://optimist.co.in",
+        "https://optimist.co.in/about/",
+        "https://jobs.weekday.works/optimist-brand-design-llp-content-writing-intern",
+        "https://www.behance.net/optimistbranddesign1?locale=en_US",
+        "https://www.truelancer.com/freelancer/tanumishra12",
+        "https://www.zoominfo.com/p/Sneha-Mishra/8813201276"
+      ],
+      "About": "Freelance content writer, ghostwriter, and creator specializing in content writing and social media strategy. Co-founder at Mantra Innovations and founder of SnehaCamroll. Experienced in client pitching, portfolio development, and creating content for various creators and brands across digital platforms."
+    },
+    {
+      "Name": "Gulab Singh",
+      "Company": "EORI (UK) Limited",
+      "Designation": "Chief Technology Officer",
+      "Linkedin_URL": null,
+      "Email": null,
+      "Phone_Number": null,
+      "Citations": [
+        "API request failed - manual research required",
+        "API request failed - manual research required",
+        "API request failed - manual research required",
+        "API request failed - manual research required",
+        "API request failed - manual research required",
+        "API request failed - manual research required",
+        "API request failed - manual research required",
+        "API request failed - manual research required",
+        "API request failed - manual research required",
+        "API request failed - manual research required"
+      ],
+      "About": "Gulab Singh works as Chief Technology Officer at EORI (UK) Limited. Professional background and achievements require manual research due to API limitations."
+    },
+    {
+      "Name": "Sourabh Chandrakant Todkar",
+      "Company": "Indamer Aviation Pvt. Ltd.",
+      "Designation": "Trainee Technician",
+      "Linkedin_URL": null,
+      "Email": null,
+      "Phone_Number": null,
+      "Citations": [
+        "https://www.puneiat.edu.in/successful-placement/",
+        "https://www.scribd.com/document/342919226/Comp-Number-List",
+        "https://www.instagram.com/sourabhtodkar7/",
+        "https://in.indeed.com/cmp/Indamer-Aviation",
+        "https://www.signalhire.com/companies/indamer-aviation-pvt-ltd",
+        "https://www.amecet.in/articles/maintenance-repair-and-overhaul-mro-organizations/indamer-aviation-private-limited",
+        "https://www.zoominfo.com/pic/indamer-aviation-private-ltd/356065953",
+        "https://www.signalhire.com/companies/indamer-aviation-pvt-ltd/employees",
+        "https://www.puneiat.edu.in",
+        "https://www.expertrons.com/app/app-links/"
+      ],
+      "About": "Aviation technician graduated from Pune Institute of Aviation Technology and placed at Indamer Aviation, a leading Indian MRO service provider founded in 1947. Specializes in aircraft maintenance and repair services for business jets and helicopters across India's aviation industry."
+    },
+    {
+      "Name": "Anirudha Menon",
+      "Company": "National Yang Ming Chiao Tung University (NCTS)",
+      "Designation": "NCTS Postdoctoral Fellow",
+      "Linkedin_URL": null,
+      "Email": "menon@phys.ncts.ntu.edu.tw",
+      "Phone_Number": "+886-3-5712121#56250",
+      "Citations": [
+        "https://www.anirudhamenon.com",
+        "https://phys.ncts.ntu.edu.tw/en/people/research_staff/Menon-Anirudha-362227",
+        "https://scholar.google.es/citations?user=9BfwuSsAAAAJ&hl=th",
+        "https://arxiv.org/html/2311.12107v2",
+        "https://pubmed.ncbi.nlm.nih.gov/38906131/",
+        "https://physics.ucdavis.edu/alumni/phd-recipients",
+        "https://vectorideas.com/about-us/",
+        "https://link.aps.org/doi/10.1103/PhysRevB.104.075129",
+        "https://scipost.org/submissions/scipost_202411_00003v1/",
+        "https://www.iacs.res.in/modules/texteditor/imagesfiles/IACS%20AR%20English%2022-23.pdf"
+      ],
+      "About": "Theoretical condensed matter physicist with Ph.D. from UC Davis specializing in topological materials, quantum magnetism, and Weyl semimetals. Currently NCTS Postdoctoral Fellow at National Yang Ming Chiao Tung University studying strongly correlated systems and cold atoms."
+    },
+    {
+      "Name": "Shaila M",
+      "Company": "Sedaux Technology Private Limited",
+      "Designation": "Project Manager",
+      "Linkedin_URL": null,
+      "Email": null,
+      "Phone_Number": null,
+      "Citations": [
+        "https://www.thecompanycheck.com/company/sedaux-technology-private-limited/U74999DL2020PTC373460",
+        "https://www.filesure.in/company/sedaux-technology-private-limited/U74999DL2020PTC373460?tab=about",
+        "https://www.registrationwala.com/company/sedaux-technology-private-limited/U74999DL2020PTC373460",
+        "https://www.allindiaitr.com/company/sedaux-technology-private-limited/U74999DL2020PTC373460",
+        "https://theorg.com/org/bendigo-and-adelaide-bank-ltd/org-chart/shaila-m",
+        "https://stoladi.com/team/shaila-m-guthikonda-cordone/",
+        "https://www.zoominfo.com/people/Shaila/Moodley",
+        "https://www.zoominfo.com/p/David-Ujimoto/2300419982",
+        "https://www.zoominfo.com/p/Bianca-Baldelli/2362157534",
+        "https://www.zoominfo.com/p/Mazmi-Lamin/3238249520"
+      ],
+      "About": "Shaila M works as Project Manager at Sedaux Technology Private Limited."
+    }
+  ]
+}
