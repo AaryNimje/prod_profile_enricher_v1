@@ -37,7 +37,7 @@ class EnrichedProfile(BaseModel):
     Email: Optional[str] = Field(None, description="Professional email address")
     Phone_Number: Optional[str] = Field(None, description="Phone number")
     Citations: List[str] = Field(..., min_items=1, max_items=10, description="Research sources")
-    About: str = Field(..., min_length=10, max_length=500, description="Professional summary")
+    About: str = Field(..., min_length=10, max_length=500, description="Professional summary")  # Increased limit
     
     @field_validator('Name', 'Company', 'Designation', 'About')
     @classmethod
@@ -130,77 +130,18 @@ class ProfileEnricher:
         self.current_model = self.available_models[model_name]
         print(f"🤖 Using model: {self.current_model['name']} - {self.current_model['description']}")
         
-    def find_linkedin_url(self, input_profile: InputProfile) -> Optional[str]:
-        """Quick LinkedIn search using sonar-pro model"""
-        try:
-            linkedin_prompt = f"""Find the LinkedIn profile URL for this person:
-
-Name: {input_profile.full_name}
-Company: {input_profile.company}
-Position: {input_profile.position}
-
-Search: "{input_profile.full_name} {input_profile.company} linkedin"
-
-Return ONLY the LinkedIn URL (https://linkedin.com/in/...) or "NOT_FOUND" if no LinkedIn profile is found."""
-
-            payload = {
-                "model": "sonar-pro",
-                "messages": [{"role": "user", "content": linkedin_prompt}],
-                "temperature": 0.1,
-                "max_tokens": 200,
-                "stream": False
-            }
-            
-            print(f"🔗 Quick LinkedIn search for {input_profile.full_name}...")
-            
-            response = requests.post(
-                self.base_url,
-                headers=self.headers,
-                json=payload,
-                timeout=60
-            )
-            
-            if response.status_code == 200:
-                result = response.json()
-                content = result['choices'][0]['message']['content'].strip()
-                
-                # Extract LinkedIn URL using regex
-                import re
-                linkedin_patterns = [
-                    r'https?://(?:www\.)?linkedin\.com/in/[a-zA-Z0-9\-]+/?',
-                    r'linkedin\.com/in/[a-zA-Z0-9\-]+/?'
-                ]
-                
-                for pattern in linkedin_patterns:
-                    matches = re.findall(pattern, content, re.IGNORECASE)
-                    if matches:
-                        url = matches[0]
-                        if not url.startswith('http'):
-                            url = 'https://' + url
-                        print(f"✅ LinkedIn found: {url}")
-                        return url
-                
-                print(f"❌ No LinkedIn URL found in response: {content[:100]}...")
-                return None
-                
-            else:
-                print(f"❌ LinkedIn search failed: {response.status_code}")
-                return None
-                
-        except Exception as e:
-            print(f"❌ LinkedIn search error: {e}")
-            return None
-        """Create the EXACT same prompt as the working version but with LinkedIn focus"""
+    def create_research_prompt(self, profile: InputProfile) -> str:
+        """Create optimized prompt for deep research"""
         return f"""You are a professional researcher conducting deep background research. Find comprehensive information about this person:
 
 PERSON TO RESEARCH:
 - Name: {profile.full_name}
-- Company: {profile.company}  
+- Company: {profile.company}
 - Position: {profile.position}
 
 RESEARCH REQUIREMENTS:
 1. Find their current professional information
-2. Locate their LinkedIn profile URL - SEARCH: "{profile.full_name} linkedin" AND "{profile.full_name} {profile.company} linkedin"
+2. Locate their LinkedIn profile URL
 3. Search for contact information (email, phone)
 4. Gather career background and achievements
 5. Look for recent news, articles, or mentions
@@ -226,15 +167,11 @@ IMPORTANT INSTRUCTIONS:
 - Focus on professional LinkedIn, company websites, and reputable business sources"""
 
     def enrich_profile(self, input_profile: InputProfile) -> APIResponse:
-        """Two-step enrichment: LinkedIn search + deep research"""
+        """Enrich a single profile using Sonar deep research"""
         
         start_time = time.time()
         
         try:
-            # Step 1: Quick LinkedIn search with sonar-pro
-            linkedin_url = self.find_linkedin_url(input_profile)
-            
-            # Step 2: Deep research with sonar-deep-research (same as working version)
             prompt = self.create_research_prompt(input_profile)
             
             payload = {
@@ -250,13 +187,13 @@ IMPORTANT INSTRUCTIONS:
                 "stream": False
             }
             
-            print(f"🔍 Deep research: {input_profile.full_name} at {input_profile.company}")
+            print(f"🔍 Researching: {input_profile.full_name} at {input_profile.company}")
             
             response = requests.post(
                 self.base_url,
                 headers=self.headers,
                 json=payload,
-                timeout=300
+                timeout=300  # Increased to 5 minutes for deep research
             )
             
             processing_time = time.time() - start_time
@@ -265,8 +202,9 @@ IMPORTANT INSTRUCTIONS:
                 result = response.json()
                 content = result['choices'][0]['message']['content']
                 
-                # Parse JSON response with EXACT same logic as working version
+                # Parse JSON response
                 try:
+                    # Clean the response - sometimes API returns extra text
                     content = content.strip()
                     if content.startswith('```json'):
                         content = content[7:]
@@ -274,6 +212,7 @@ IMPORTANT INSTRUCTIONS:
                         content = content[:-3]
                     content = content.strip()
                     
+                    # Try to extract JSON if there's extra text
                     start_idx = content.find('{')
                     end_idx = content.rfind('}') + 1
                     if start_idx != -1 and end_idx != 0:
@@ -281,7 +220,7 @@ IMPORTANT INSTRUCTIONS:
                     
                     raw_data = json.loads(content)
                     
-                    # Handle null values - EXACT same logic
+                    # Handle null values from API
                     if raw_data.get('Name') is None:
                         raw_data['Name'] = input_profile.full_name
                     if raw_data.get('Company') is None:
@@ -290,10 +229,6 @@ IMPORTANT INSTRUCTIONS:
                         raw_data['Designation'] = input_profile.position
                     if raw_data.get('About') is None:
                         raw_data['About'] = f"{input_profile.full_name} works as {input_profile.position} at {input_profile.company}."
-                    
-                    # Use LinkedIn from step 1 if found, otherwise use deep research result
-                    if linkedin_url:
-                        raw_data['Linkedin_URL'] = linkedin_url
                     
                     # Add original email if provided and not found
                     if input_profile.email and not raw_data.get('Email'):
@@ -314,9 +249,6 @@ IMPORTANT INSTRUCTIONS:
                     print(f"⚠️ Invalid JSON response for {input_profile.full_name}: {e}")
                     print(f"Raw content preview: {content[:300]}...")
                     fallback_profile = self._create_fallback_profile(input_profile)
-                    # Add LinkedIn from step 1 to fallback
-                    if linkedin_url:
-                        fallback_profile.Linkedin_URL = linkedin_url
                     return APIResponse(
                         success=False,
                         profile=fallback_profile,
@@ -326,9 +258,6 @@ IMPORTANT INSTRUCTIONS:
                 except Exception as e:
                     print(f"⚠️ Validation error for {input_profile.full_name}: {e}")
                     fallback_profile = self._create_fallback_profile(input_profile)
-                    # Add LinkedIn from step 1 to fallback
-                    if linkedin_url:
-                        fallback_profile.Linkedin_URL = linkedin_url
                     return APIResponse(
                         success=False,
                         profile=fallback_profile,
@@ -339,10 +268,13 @@ IMPORTANT INSTRUCTIONS:
                 error_text = response.text
                 print(f"❌ API Error {response.status_code} for {input_profile.full_name}: {error_text}")
                 
+                # Show available models if invalid model error
+                if "invalid model" in error_text.lower() or response.status_code == 400:
+                    print("💡 Available models for Perplexity:")
+                    for model_id, info in self.available_models.items():
+                        print(f"   • {model_id}")
+                
                 fallback_profile = self._create_fallback_profile(input_profile)
-                # Add LinkedIn from step 1 to fallback
-                if linkedin_url:
-                    fallback_profile.Linkedin_URL = linkedin_url
                 return APIResponse(
                     success=False,
                     profile=fallback_profile,
@@ -375,7 +307,7 @@ IMPORTANT INSTRUCTIONS:
         )
     
     def process_csv_file(self, file_path: str, delay_seconds: float = 10.0) -> EnrichmentResults:
-        """Process CSV file and enrich all profiles - EXACT same logic as working version"""
+        """Process CSV file and enrich all profiles"""
         
         start_time = time.time()
         
@@ -403,7 +335,7 @@ IMPORTANT INSTRUCTIONS:
         column_mapping = self._detect_columns(headers)
         print(f"🎯 Column mapping: {column_mapping}")
         
-        # Parse input profiles with Pydantic validation - EXACT same logic
+        # Parse input profiles with Pydantic validation
         input_profiles = []
         for i, row in enumerate(profiles_data):
             try:
@@ -455,16 +387,12 @@ IMPORTANT INSTRUCTIONS:
                 enriched_profiles.append(api_response.profile)
                 if api_response.success:
                     successful += 1
-                    # Show LinkedIn/contact success indicators
-                    linkedin_found = "✅" if api_response.profile.Linkedin_URL else "❌"
-                    email_found = "✅" if api_response.profile.Email else "❌"
-                    phone_found = "✅" if api_response.profile.Phone_Number else "❌"
-                    print(f"   ✅ Success in {api_response.processing_time:.1f}s | LinkedIn {linkedin_found} | Email {email_found} | Phone {phone_found}")
+                    print(f"   ✅ Success in {api_response.processing_time:.1f}s")
                 else:
                     failed += 1
                     print(f"   ❌ Failed: {api_response.error}")
             
-            # Rate limiting
+            # Rate limiting - Deep research needs longer delays
             if i < len(input_profiles) - 1:  # Don't delay after last request
                 print(f"⏳ Waiting {delay_seconds} seconds for rate limiting...")
                 time.sleep(delay_seconds)
@@ -535,8 +463,6 @@ IMPORTANT INSTRUCTIONS:
         
         print(f"💾 Results saved to: {output_file}")
 
-    
-
 
 def convert_excel_to_csv(excel_path: str) -> str:
     """Convert Excel file to CSV for processing"""
@@ -571,7 +497,7 @@ def convert_excel_to_csv(excel_path: str) -> str:
 
 
 def main():
-    """Main function to run profile enrichment - SIMPLIFIED to use sonar-deep-research only"""
+    """Main function to run profile enrichment"""
     
     # Check for API key
     if not os.environ.get('PERPLEXITY_API_KEY'):
@@ -580,14 +506,25 @@ def main():
         print("💡 Or in Command Prompt: set PERPLEXITY_API_KEY=your_api_key_here")
         return
     
-    # Force sonar-deep-research (the working model)
-    print("🤖 TWO-STEP PROFILE ENRICHMENT")
-    print("Step 1: Quick LinkedIn search with sonar-pro")
-    print("Step 2: Deep research with sonar-deep-research (same working model)")
+    # Show available models
+    print("🤖 AVAILABLE MODELS:")
+    models = {
+        "sonar-deep-research": "🔍 Best for comprehensive research (slower, most detailed)",
+        "sonar-pro": "⚡ Balanced speed and depth with citations",  
+        "sonar": "🚀 Fastest with basic search"
+    }
+    
+    for model, desc in models.items():
+        print(f"   • {model}: {desc}")
+    
+    # Get model choice
+    model_choice = input("\n🎯 Choose model (default: sonar-deep-research): ").strip()
+    if not model_choice:
+        model_choice = "sonar-deep-research"
     
     # Initialize enricher
     try:
-        enricher = ProfileEnricher("sonar-deep-research")
+        enricher = ProfileEnricher(model_choice)
     except Exception as e:
         print(f"❌ Failed to initialize ProfileEnricher: {e}")
         return
@@ -610,51 +547,41 @@ def main():
                 print("💡 Please convert to CSV manually or install openpyxl")
                 return
         
-        # Use same delay as working version
-        delay = 15.0  # Same as what was working
+        # Set delay based on model
+        delay_map = {
+            "sonar-deep-research": 15.0,  # Deep research takes time
+            "sonar-pro": 5.0,
+            "sonar": 3.0
+        }
+        delay = delay_map.get(model_choice, 10.0)
         
         # Process CSV file
         results = enricher.process_csv_file(file_path, delay_seconds=delay)
         
-        # Display summary with contact info stats
-        linkedin_found = sum(1 for p in results.profiles if p.Linkedin_URL)
-        email_found = sum(1 for p in results.profiles if p.Email)  
-        phone_found = sum(1 for p in results.profiles if p.Phone_Number)
-        
+        # Display results summary
         print(f"\n🎉 Processing completed!")
         print(f"📊 Total processed: {results.total_processed}")
         print(f"✅ Successful: {results.successful}")
         print(f"❌ Failed: {results.failed}")
-        print(f"🔗 LinkedIn URLs found: {linkedin_found}/{len(results.profiles)}")
-        print(f"📧 Emails found: {email_found}/{len(results.profiles)}")
-        print(f"📞 Phone numbers found: {phone_found}/{len(results.profiles)}")
         print(f"⏱️  Total time: {results.processing_time/60:.1f} minutes")
         print("\n" + "="*80)
         
-        # Display detailed results with better formatting
+        # Display detailed results (first 3 profiles)
         displayed_count = min(3, len(results.profiles))
         for i, profile in enumerate(results.profiles[:displayed_count], 1):
-            linkedin_status = "✅ Found" if profile.Linkedin_URL else "❌ Not found"
-            email_status = "✅ Found" if profile.Email else "❌ Not found"
-            phone_status = "✅ Found" if profile.Phone_Number else "❌ Not found"
-            
-            print(f"\n📋 Profile {i}: {profile.Name}")
-            print(f"   Company: {profile.Company}")
-            print(f"   Position: {profile.Designation}")
-            print(f"   LinkedIn: {linkedin_status}")
-            if profile.Linkedin_URL:
-                print(f"            {profile.Linkedin_URL}")
-            print(f"   Email: {email_status}")
-            if profile.Email:
-                print(f"          {profile.Email}")
-            print(f"   Phone: {phone_status}")
-            if profile.Phone_Number:
-                print(f"          {profile.Phone_Number}")
-            print(f"   About: {profile.About[:80]}{'...' if len(profile.About) > 80 else ''}")
-            print("-" * 70)
+            print(f"\n📋 Profile {i}:")
+            print(f"Name: {profile.Name}")
+            print(f"Company: {profile.Company}")
+            print(f"Designation: {profile.Designation}")
+            print(f"LinkedIn: {profile.Linkedin_URL}")
+            print(f"Email: {profile.Email}")
+            print(f"Phone: {profile.Phone_Number}")
+            print(f"About: {profile.About[:100]}{'...' if len(profile.About) > 100 else ''}")
+            print(f"Citations: {len(profile.Citations)} sources")
+            print("-" * 50)
         
         if len(results.profiles) > displayed_count:
-            print(f"📋 ... and {len(results.profiles) - displayed_count} more profiles in JSON file")
+            print(f"... and {len(results.profiles) - displayed_count} more profiles")
         
         # Save results
         save_choice = input("\n💾 Save results to JSON file? (y/n): ").lower()
